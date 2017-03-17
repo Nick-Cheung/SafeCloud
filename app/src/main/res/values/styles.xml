@@ -1,0 +1,40 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+
+
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:switchPadding">?android:attr/switchMinWidth</item>
+
+
+    </style>
+
+
+    <style name="toolbar_style" parent="Base.Widget.AppCompat.Light.ActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="popupTheme">@style/Theme.AppCompat.Light</item>
+        <item name="android:titleTextAppearance">@style/toolbar_title_style</item>
+    </style>
+
+
+    <style name="toolbar_title_style" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+
+
+
+</resources>
