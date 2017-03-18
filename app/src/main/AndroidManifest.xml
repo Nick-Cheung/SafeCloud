@@ -26,6 +26,9 @@
         <activity
                 android:name=".activity.WebLoginActivity"
                 android:screenOrientation="portrait"/>
+
+
+        <service android:name=".api.DownloadService" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>

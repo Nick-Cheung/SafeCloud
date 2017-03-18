@@ -38,7 +38,7 @@ public interface BaiduApi {
     String GET_FILE_LIST = "/api/list";
 
 
-    String DOWNLAOD_FILE_URL_FORMAT = "http://c.pcs.baidu.com/rest/2.0/pcs/file?method=download&app_id=250528&path=%s";
+    ;
 
 
     @GET(GET_QUOTE)

@@ -2,13 +2,12 @@ package com.nick.safecloud.activity;
 
 import com.google.gson.Gson;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,20 +19,15 @@ import com.nick.safecloud.R;
 import com.nick.safecloud.adapter.FileListAdapter;
 import com.nick.safecloud.api.ApiScheduler;
 import com.nick.safecloud.api.BaiduApi;
+import com.nick.safecloud.api.DownloadService;
 import com.nick.safecloud.base.BaseActivity;
 import com.nick.safecloud.model.FileListModel;
-import com.nick.safecloud.util.CookieUtil;
 import com.nick.safecloud.util.DensityUtil;
 import com.nick.safecloud.util.ToastUtil;
 import com.trello.rxlifecycle.ActivityEvent;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.FileCallBack;
-
-import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import okhttp3.Call;
 import rx.Subscriber;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
@@ -57,6 +51,8 @@ public class FileListActivity extends BaseActivity {
 
 
     FileListAdapter mAdapter;
+    @Bind(R.id.floatingActionButton)
+    FloatingActionButton mFloatingActionButton;
 
 
     public static void startMe(Context context, String dir) {
@@ -120,6 +116,13 @@ public class FileListActivity extends BaseActivity {
                 getFileList(true);
             }
         });
+
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private FileListAdapter.ItemClicklListener mItemClicklListener = new FileListAdapter.ItemClicklListener() {
@@ -132,48 +135,12 @@ public class FileListActivity extends BaseActivity {
                         .setAction("确定", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                downLoadFile(item.getPath(), item.getServer_filename());
-                                progressDialog = new ProgressDialog(FileListActivity.this);
-                                progressDialog.setMessage("正在下载"+item.getServer_filename());
-                                progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                                progressDialog.setMax(100);
-                                progressDialog.show();
+                                DownloadService.startMe(FileListActivity.this, item.getPath(), item.getServer_filename(), false);
                             }
                         }).show();
             }
         }
     };
-
-
-
-    ProgressDialog progressDialog;
-
-    private void downLoadFile(String path, String fileName) {
-        OkHttpUtils.get().url(String.format(BaiduApi.DOWNLAOD_FILE_URL_FORMAT, path))
-                .addHeader("cookie", CookieUtil.getCookie())
-                .build()
-                .execute(new FileCallBack(Environment.getExternalStorageDirectory().getAbsolutePath(), fileName) {
-
-                    @Override
-                    public void inProgress(float progress, long total, int id) {
-                        super.inProgress(progress, total, id);
-                        progressDialog.setProgress((int) (progress / total * 100));
-                    }
-
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        e.printStackTrace();
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onResponse(File response, int id) {
-                        ToastUtil.showText("下载成功");
-                    }
-                });
-
-
-    }
 
 
     private void getFileList(final boolean refresh) {
