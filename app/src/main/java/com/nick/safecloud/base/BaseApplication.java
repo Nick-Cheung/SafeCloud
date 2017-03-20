@@ -37,8 +37,9 @@ public class BaseApplication extends Application {
 
         final CookieJarImpl cookieJar = new CookieJarImpl(new MemoryCookieStore());
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-                .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                .connectTimeout(10000L, TimeUnit.SECONDS)
+                .readTimeout(10000L, TimeUnit.SECONDS)
+                .writeTimeout(10000L, TimeUnit.SECONDS)
                 .cookieJar(cookieJar)
                 //其他配置
                 .build();

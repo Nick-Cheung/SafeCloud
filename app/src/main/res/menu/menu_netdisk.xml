@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/item_net_disk"
+          android:icon="@drawable/ic_home"
+          android:title="我的网盘" />
+
+    <item android:id="@+id/item_download"
+          android:icon="@drawable/ic_cloud_download"
+          android:title="下载文件" />
+</menu>

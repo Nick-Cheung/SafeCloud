@@ -10,7 +10,7 @@ import com.nick.safecloud.api.ApiScheduler;
 import com.nick.safecloud.api.BaiduApi;
 import com.nick.safecloud.base.BaseActivity;
 import com.nick.safecloud.model.CloudInfoModel;
-import com.nick.safecloud.util.CookieUtil;
+import com.nick.safecloud.utils.CookieUtils;
 import com.trello.rxlifecycle.ActivityEvent;
 
 import java.util.concurrent.TimeUnit;
@@ -35,7 +35,7 @@ public class LoadingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        if(TextUtils.isEmpty(CookieUtil.getCookie())) {
+        if(TextUtils.isEmpty(CookieUtils.getCookie())) {
             needLogin = true;
         } else {
             getQuote();
@@ -61,7 +61,7 @@ public class LoadingActivity extends BaseActivity {
                             WebLoginActivity.startMe(LoadingActivity.this);
 
                         } else {
-                            FileListActivity.startMe(LoadingActivity.this, "/");
+                            NetDiskActivity.startMe(LoadingActivity.this, "/");
                         }
                         finish();
                     }

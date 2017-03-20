@@ -2,7 +2,7 @@ package com.nick.safecloud.api;
 
 import android.util.Log;
 
-import com.nick.safecloud.util.CookieUtil;
+import com.nick.safecloud.utils.CookieUtils;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -19,6 +19,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -38,7 +39,7 @@ public interface BaiduApi {
     String GET_FILE_LIST = "/api/list";
 
 
-    ;
+    String GET_USER_INFO = "https://topmsg.baidu.com/v2/?ucentertopbarinit&tt=%s&callback=bd__cbs__d9xfpc";
 
 
     @GET(GET_QUOTE)
@@ -47,6 +48,10 @@ public interface BaiduApi {
 
     @GET(GET_FILE_LIST)
     Observable<String> getFileList(@Query("dir") String dir);
+
+
+    @GET("")
+    Observable<String> getUserInfo(@Url String url);
 
 
 
@@ -81,7 +86,7 @@ public interface BaiduApi {
         public Response intercept(Chain chain) throws IOException {
 
             Request.Builder builder = chain.request().newBuilder();
-            builder.addHeader("cookie", CookieUtil.getCookie());
+            builder.addHeader("cookie", CookieUtils.getCookie());
             Response response = chain.proceed(builder.build());
 
             Log.i("url", chain.request().url().toString());

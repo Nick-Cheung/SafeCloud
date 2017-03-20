@@ -16,7 +16,7 @@ import com.nick.safecloud.api.ApiScheduler;
 import com.nick.safecloud.api.BaiduApi;
 import com.nick.safecloud.base.BaseActivity;
 import com.nick.safecloud.model.CloudInfoModel;
-import com.nick.safecloud.util.CookieUtil;
+import com.nick.safecloud.utils.CookieUtils;
 import com.trello.rxlifecycle.ActivityEvent;
 
 import butterknife.Bind;
@@ -89,7 +89,7 @@ public class WebLoginActivity extends BaseActivity {
             CookieManager cookieManager = CookieManager.getInstance();
 
             String cookie = cookieManager.getCookie(url);
-            CookieUtil.putCookie(cookie);
+            CookieUtils.putCookie(cookie);
 
             BaiduApi.ApiBuilder.build().getQuote()
                     .map(new Func1<String, Boolean>() {
@@ -115,7 +115,7 @@ public class WebLoginActivity extends BaseActivity {
                         @Override
                         public void onNext(Boolean aBoolean) {
                             if(aBoolean == true) {
-                                FileListActivity.startMe(WebLoginActivity.this, "/");
+                                NetDiskActivity.startMe(WebLoginActivity.this, "/");
                             }
                         }
                     });

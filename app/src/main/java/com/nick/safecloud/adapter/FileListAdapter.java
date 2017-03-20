@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.nick.safecloud.R;
 import com.nick.safecloud.model.FileListModel;
+import com.nick.safecloud.utils.TimeUtils;
 
 import java.util.List;
 
@@ -60,8 +61,13 @@ public class FileListAdapter extends BaseQuickAdapter<FileListModel.ListBean, Fi
         public void setContent(FileListModel.ListBean data) {
 
             tvName.setText(data.getServer_filename());
-            tvTime.setText(String.valueOf(data.getServer_mtime()));
-            ivIcon.setImageResource(R.drawable.ic_folder_special);
+            tvTime.setText(TimeUtils.stamp2Date(data.getServer_mtime()));
+
+            if(data.getIsdir() == 1) {
+                ivIcon.setImageResource(R.drawable.ic_folder_special);
+            } else {
+                ivIcon.setImageResource(R.drawable.ic_insert_drive_file);
+            }
 
         }
 

@@ -10,8 +10,8 @@ import android.support.v7.app.NotificationCompat;
 
 import com.nick.safecloud.R;
 import com.nick.safecloud.base.BaseApplication;
-import com.nick.safecloud.util.CookieUtil;
-import com.nick.safecloud.util.ToastUtil;
+import com.nick.safecloud.utils.CookieUtils;
+import com.nick.safecloud.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -25,7 +25,7 @@ import okhttp3.Call;
 
 public class UploadService extends Service {
 
-    public static final String UPLOAD_URL = "http://c.pcs.baidu.com/rest/2.0/pcs/file";
+    public static final String UPLOAD_URL = "http://c.pcs.baidu.com/rest/2.0/pcs/file?method=upload&ondup=newcopy&app_id=250528&path=%s";
 
     public static final String PARAM_FILE_PATH = "filepath";
     public static final String PARAM_REMOTE_PATH = "remotepath";
@@ -53,12 +53,15 @@ public class UploadService extends Service {
 
     private void init(Intent intent) {
         filePath = intent.getStringExtra(PARAM_FILE_PATH);
-        remotePath = intent.getStringExtra(PARAM_REMOTE_PATH);
-        encode = intent.getBooleanExtra(PARAM_ENCODE, false);
-
 
         uploadFile = new File(filePath);
         fileName = uploadFile.getName();
+
+        remotePath = intent.getStringExtra(PARAM_REMOTE_PATH) + "/" + fileName;
+        encode = intent.getBooleanExtra(PARAM_ENCODE, false);
+
+
+
 
         notificationID = filePath.hashCode();
         mNotificationBuilder = new NotificationCompat.Builder(BaseApplication.getInstance().getApplicationContext());
@@ -82,14 +85,11 @@ public class UploadService extends Service {
 
     void startUpload() {
 
+        ToastUtils.showText(fileName);
         OkHttpUtils.post()
-                .addFile(fileName, fileName, uploadFile)
-                .addParams("method", "upload")
-                .addParams("ondup", "overwrite")
-                .addParams("app_id", "250528")
-                .addParams("path", remotePath)
-                .addHeader("cookie", CookieUtil.getCookie())
-                .url(UPLOAD_URL)
+                .addFile("filename", fileName, uploadFile)
+                .addHeader("cookie", CookieUtils.getCookie())
+                .url(String.format(UPLOAD_URL, remotePath))
                 .build()
                 .execute(new StringCallback() {
 
@@ -112,10 +112,9 @@ public class UploadService extends Service {
                     public void onResponse(String response, int id) {
                         mNotificationBuilder.setContentText("上传成功");
                         mNotificationManager.notify(notificationID, mNotificationBuilder.build());
-                        ToastUtil.showText("上传" + fileName + "成功");
+                        ToastUtils.showText("上传" + fileName + "成功");
                     }
                 });
-
 
     }
 

@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
@@ -12,14 +11,16 @@ import android.util.Log;
 
 import com.nick.safecloud.R;
 import com.nick.safecloud.base.BaseApplication;
-import com.nick.safecloud.util.CookieUtil;
-import com.nick.safecloud.util.ToastUtil;
+import com.nick.safecloud.utils.CookieUtils;
+import com.nick.safecloud.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
 
 import java.io.File;
 
 import okhttp3.Call;
+
+import static com.nick.safecloud.utils.FileUtils.getDownloadFolder;
 
 /**
  * Created by Sparrow on 2017/3/18.
@@ -29,7 +30,6 @@ public class DownloadService extends Service{
 
     public  static String DOWNLAOD_FILE_URL_FORMAT = "http://c.pcs.baidu.com/rest/2.0/pcs/file?method=download&app_id=250528&path=%s";
 
-    public static final String DOWNLOAD_URL = "/SafeCloud/download/";
 
     public static final String PARAM_URL = "url";
     public static final String PARAM_FILENAME = "filename";
@@ -89,9 +89,9 @@ public class DownloadService extends Service{
 
 
     private void startDownload() {
-        final String savePathFolder = Environment.getExternalStorageDirectory().getAbsolutePath() + DOWNLOAD_URL;
+        final String savePathFolder = getDownloadFolder();
         OkHttpUtils.get().url(String.format(DOWNLAOD_FILE_URL_FORMAT, url))
-                .addHeader("cookie", CookieUtil.getCookie())
+                .addHeader("cookie", CookieUtils.getCookie())
                 .build()
                 .execute(new FileCallBack(savePathFolder, filename) {
 
@@ -108,14 +108,14 @@ public class DownloadService extends Service{
                         e.printStackTrace();
                         mNotificationBuilder.setContentText("下载失败");
                         mNotificationManager.notify(notificationID, mNotificationBuilder.build());
-                        ToastUtil.showText("下载失败");
+                        ToastUtils.showText("下载失败");
                     }
 
                     @Override
                     public void onResponse(File response, int id) {
                         mNotificationBuilder.setContentText("下载成功");
                         mNotificationManager.notify(notificationID, mNotificationBuilder.build());
-                        ToastUtil.showText("下载成功,文件路径为" + savePathFolder + filename);
+                        ToastUtils.showText("下载成功,文件路径为" + savePathFolder + filename);
                     }
                 });
     }

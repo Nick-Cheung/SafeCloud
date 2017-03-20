@@ -20,7 +20,13 @@
         </activity>
 
 
-        <activity android:name=".activity.FileListActivity"/>
+        <activity
+                android:name=".activity.FileListActivity"
+                android:screenOrientation="portrait"/>
+
+        <activity
+                android:name=".activity.NetDiskActivity"
+                android:screenOrientation="portrait"/>
 
 
         <activity
@@ -28,13 +34,13 @@
                 android:screenOrientation="portrait"/>
 
 
-        <service android:name=".api.DownloadService" />
+        <service android:name=".api.DownloadService"/>
+        <service android:name=".api.UploadService"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
 
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.nick.safecloud.util;
+package com.nick.safecloud.utils;
 
 import com.nick.safecloud.base.BaseApplication;
 
@@ -6,7 +6,7 @@ import com.nick.safecloud.base.BaseApplication;
  * Created by Sparrow on 2017/3/17.
  */
 
-public class DensityUtil {
+public class DensityUtils {
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
