@@ -19,16 +19,18 @@ import com.zhy.http.okhttp.callback.FileCallBack;
 import java.io.File;
 
 import okhttp3.Call;
+import rx.Observable;
+import rx.Subscriber;
 
 import static com.nick.safecloud.utils.FileUtils.getDownloadFolder;
 
+
 /**
- * Created by Sparrow on 2017/3/18.
+ * 下载的Service
  */
+public class DownloadService extends Service {
 
-public class DownloadService extends Service{
-
-    public  static String DOWNLAOD_FILE_URL_FORMAT = "http://c.pcs.baidu.com/rest/2.0/pcs/file?method=download&app_id=250528&path=%s";
+    public static String DOWNLAOD_FILE_URL_FORMAT = "http://c.pcs.baidu.com/rest/2.0/pcs/file?method=download&app_id=250528&path=%s";
 
 
     public static final String PARAM_URL = "url";
@@ -36,17 +38,16 @@ public class DownloadService extends Service{
     public static final String PARAM_DECODE = "decode";
 
 
-
     NotificationManager mNotificationManager;
-    NotificationCompat.Builder mNotificationBuilder;
-    int notificationID;
+    NotificationCompat.Builder mNotificationBuilder;    //通知栏通知
+    int notificationID;         //通知栏通知ID
 
-    String url;
-    String filename;
-    boolean decode;
+    String url;     //文件下载路径
+    String filename;    //文件名
+    boolean decode;     //是否需要解密
 
 
-
+    //启动一个Serivice的静态函数
     public static void startMe(Context context, String url, String fileName, boolean decode) {
         Intent intent = new Intent(context, DownloadService.class);
         intent.putExtra(PARAM_URL, url);
@@ -62,12 +63,14 @@ public class DownloadService extends Service{
     }
 
     private void init(Intent intent) {
+
+        //获取传入的参数
         url = intent.getStringExtra(PARAM_URL);
         filename = intent.getStringExtra(PARAM_FILENAME);
         decode = intent.getBooleanExtra(PARAM_DECODE, false);
 
+        //初始化通知栏
         notificationID = url.hashCode();
-
         mNotificationBuilder = new NotificationCompat.Builder(BaseApplication.getInstance().getApplicationContext());
         mNotificationBuilder.setSmallIcon(R.drawable.ic_cloud_download);
         mNotificationBuilder.setContentTitle(filename);
@@ -81,11 +84,10 @@ public class DownloadService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        init(intent);
-        startDownload();
+        init(intent);       //初始化
+        startDownload();        //开始下载
         return super.onStartCommand(intent, flags, startId);
     }
-
 
 
     private void startDownload() {
@@ -115,10 +117,48 @@ public class DownloadService extends Service{
                     public void onResponse(File response, int id) {
                         mNotificationBuilder.setContentText("下载成功");
                         mNotificationManager.notify(notificationID, mNotificationBuilder.build());
-                        ToastUtils.showText("下载成功,文件路径为" + savePathFolder + filename);
+
+                        if (decode) {       //如果需要解密则解密
+                            decodeFile(savePathFolder + filename);
+                        } else {
+                            ToastUtils.showText("下载成功,文件路径为" + savePathFolder + filename);
+                        }
+
                     }
                 });
     }
+
+    /**
+     * 解密文件
+     * @param path 文件路径
+     */
+    private void decodeFile(final String path) {
+        Observable
+                .create(new Observable.OnSubscribe<String>() {
+
+                    @Override
+                    public void call(Subscriber<? super String> subscriber) {
+                        //解密的地方
+                    }
+                }).compose(new ApiScheduler<String>())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        ToastUtils.showText("下载成功,文件路径为" + path);
+                    }
+                });
+    }
+
 
     @Nullable
     @Override

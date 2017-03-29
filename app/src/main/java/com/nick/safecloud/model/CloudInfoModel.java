@@ -1,7 +1,7 @@
 package com.nick.safecloud.model;
 
 /**
- * Created by Sparrow on 2017/1/4.
+ * 网盘容量信息的Model类
  */
 
 public class CloudInfoModel {

@@ -20,7 +20,7 @@ import rx.Subscriber;
 import rx.functions.Func1;
 
 /**
- * Created by Sparrow on 2017/3/17.
+ * 启动页面
  */
 
 public class LoadingActivity extends BaseActivity {
@@ -41,6 +41,7 @@ public class LoadingActivity extends BaseActivity {
             getQuote();
         }
 
+        //3秒后决定跳转到哪一个页面
         Observable.timer(LOADING_TIME_MILLISECOND, TimeUnit.MILLISECONDS)
                 .compose(new ApiScheduler<Long>())
                 .compose(this.<Long>bindUntilEvent(ActivityEvent.DESTROY))
@@ -58,10 +59,9 @@ public class LoadingActivity extends BaseActivity {
                     @Override
                     public void onNext(Long aLong) {
                         if(needLogin) {
-                            WebLoginActivity.startMe(LoadingActivity.this);
-
+                            WebLoginActivity.startMe(LoadingActivity.this); //登录页面
                         } else {
-                            NetDiskActivity.startMe(LoadingActivity.this, "/");
+                            NetDiskActivity.startMe(LoadingActivity.this, "/");  //网盘页面
                         }
                         finish();
                     }

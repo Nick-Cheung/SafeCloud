@@ -19,7 +19,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -39,19 +38,16 @@ public interface BaiduApi {
     String GET_FILE_LIST = "/api/list";
 
 
-    String GET_USER_INFO = "https://topmsg.baidu.com/v2/?ucentertopbarinit&tt=%s&callback=bd__cbs__d9xfpc";
 
-
+    /*获取网盘的容量信息*/
     @GET(GET_QUOTE)
     Observable<String> getQuote();
 
 
+    /*获取某一个目录下的文件列表*/
     @GET(GET_FILE_LIST)
-    Observable<String> getFileList(@Query("dir") String dir);
+    Observable<String> getFileList(@Query("dir") String dir);   //目录名
 
-
-    @GET("")
-    Observable<String> getUserInfo(@Url String url);
 
 
 
@@ -75,39 +71,30 @@ public interface BaiduApi {
                 instance = builder.build().create(BaiduApi.class);
 
             }
-
             return instance;
         }
     }
 
-    class SetCookieInterceptor implements Interceptor {
 
+    class SetCookieInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
-
             Request.Builder builder = chain.request().newBuilder();
             builder.addHeader("cookie", CookieUtils.getCookie());
             Response response = chain.proceed(builder.build());
-
             Log.i("url", chain.request().url().toString());
-
             return response;
         }
     }
 
 
 
-
-
-
     class DirectResponse extends ResponseConverter<String> {
-
         @Override
         protected String convertData(String data) throws IOException {
             return data;
         }
     }
-
 
     abstract class ResponseConverter<R> implements Converter<ResponseBody, R> {
 
@@ -123,7 +110,6 @@ public interface BaiduApi {
             public static Factory create() {
                 return new Factory();
             }
-
 
             @Override
             public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {

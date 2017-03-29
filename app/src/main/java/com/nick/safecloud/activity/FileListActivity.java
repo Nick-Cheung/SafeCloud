@@ -16,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by Sparrow on 2017/3/17.
+ * 文件列表页面
  */
 
 public class FileListActivity extends BaseActivity {

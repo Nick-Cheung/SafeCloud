@@ -1,7 +1,7 @@
 package com.nick.safecloud.utils;
 
 /**
- * Created by Sparrow on 2017/3/20.
+ * 字符串工具类
  */
 
 public class StringUtils {

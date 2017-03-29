@@ -3,7 +3,7 @@ package com.nick.safecloud.utils;
 import java.text.SimpleDateFormat;
 
 /**
- * Created by Sparrow on 2017/3/20.
+ * 时间显示工具类
  */
 
 public class TimeUtils {

@@ -25,14 +25,12 @@ import rx.Subscriber;
 import rx.functions.Func1;
 
 /**
- * Created by Sparrow on 2017/3/17.
+ * 网页登录页面
  */
 
 public class WebLoginActivity extends BaseActivity {
 
     public static final String URL_BAIDU_LOGIN = "https://wappass.baidu.com/passport?login&authsite=1&tpl=netdisk&overseas=1&regdomestic=1&smsLoginLink=1&display=mobile&u=http%3A%2F%2Fpan.baidu.com%2F";
-
-
 
     @Bind(R.id.webview_login)
     WebView webView;
@@ -86,11 +84,12 @@ public class WebLoginActivity extends BaseActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
+            //保存Cookie
             CookieManager cookieManager = CookieManager.getInstance();
-
             String cookie = cookieManager.getCookie(url);
             CookieUtils.putCookie(cookie);
 
+            //获取网盘容量信息
             BaiduApi.ApiBuilder.build().getQuote()
                     .map(new Func1<String, Boolean>() {
                         @Override
@@ -114,7 +113,7 @@ public class WebLoginActivity extends BaseActivity {
 
                         @Override
                         public void onNext(Boolean aBoolean) {
-                            if(aBoolean == true) {
+                            if(aBoolean == true) {      //如果成功获取到网盘容量信息则跳转到网盘页面
                                 NetDiskActivity.startMe(WebLoginActivity.this, "/");
                             }
                         }

@@ -18,9 +18,11 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.io.File;
 
 import okhttp3.Call;
+import rx.Observable;
+import rx.Subscriber;
 
 /**
- * Created by Sparrow on 2017/3/18.
+ * 上传的Service
  */
 
 public class UploadService extends Service {
@@ -39,7 +41,7 @@ public class UploadService extends Service {
     String fileName;
     String remotePath;
     boolean encode;
-    File uploadFile;
+
 
 
     public static void startMe(Context context, String filePath, String remotePath, boolean encode) {
@@ -54,13 +56,11 @@ public class UploadService extends Service {
     private void init(Intent intent) {
         filePath = intent.getStringExtra(PARAM_FILE_PATH);
 
-        uploadFile = new File(filePath);
-        fileName = uploadFile.getName();
+        File file = new File(filePath);
+        fileName = file.getName();
 
         remotePath = intent.getStringExtra(PARAM_REMOTE_PATH) + "/" + fileName;
         encode = intent.getBooleanExtra(PARAM_ENCODE, false);
-
-
 
 
         notificationID = filePath.hashCode();
@@ -78,16 +78,58 @@ public class UploadService extends Service {
 
         init(intent);
 
-        startUpload();
+        if(encode) {
+            encodeFile();
+        } else {
+            startUpload(filePath);
+        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
 
-    void startUpload() {
+    /**
+     * 加密文件
+     */
+    private void encodeFile() {
+        Observable
+                .create(new Observable.OnSubscribe<String>() {
 
-        ToastUtils.showText(fileName);
+                    @Override
+                    public void call(Subscriber<? super String> subscriber) {
+                        //加密的地方
+                    }
+                }).compose(new ApiScheduler<String>())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+
+                        startUpload(s);          //加密成功后开始上传
+                    }
+                });
+    }
+
+
+    /**
+     * 上传文件
+     * @param filePath 文件路径
+     */
+    void startUpload(String filePath) {
+
+        ToastUtils.showText(filePath);
+        File file = new File(filePath);
         OkHttpUtils.post()
-                .addFile("filename", fileName, uploadFile)
+                .addFile("filename", file.getName(), file)
                 .addHeader("cookie", CookieUtils.getCookie())
                 .url(String.format(UPLOAD_URL, remotePath))
                 .build()

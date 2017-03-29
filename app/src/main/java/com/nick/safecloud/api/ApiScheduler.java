@@ -5,7 +5,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Sparrow on 2017/3/17.
+ * 线程调度类
  */
 
 public class ApiScheduler<R> implements Observable.Transformer<R, R> {

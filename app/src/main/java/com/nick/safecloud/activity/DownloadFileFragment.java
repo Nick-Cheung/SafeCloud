@@ -23,7 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by Sparrow on 2017/3/20.
+ * 已下载文件列表页面
  */
 
 public class DownloadFileFragment extends BaseFragment {

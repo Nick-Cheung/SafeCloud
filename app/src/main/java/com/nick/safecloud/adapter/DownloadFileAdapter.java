@@ -13,7 +13,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created by Sparrow on 2017/3/20.
+ * 已下载文件列表的Adapter
  */
 
 public class DownloadFileAdapter extends BaseQuickAdapter<File, DownloadFileAdapter.ViewHolder> {

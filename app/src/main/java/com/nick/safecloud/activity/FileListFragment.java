@@ -42,7 +42,7 @@ import rx.functions.Func1;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * Created by Sparrow on 2017/3/20.
+ * 文件列表Fragment
  */
 
 public class FileListFragment extends BaseFragment {
@@ -78,7 +78,6 @@ public class FileListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_file_list, container, false);
         ButterKnife.bind(this, rootView);
-
         setContent();
         setListener();
         return rootView;
@@ -97,6 +96,7 @@ public class FileListFragment extends BaseFragment {
     private void setContent() {
 
         mRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+        //设置列表之前的间距
         mRecyclerview.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -118,7 +118,6 @@ public class FileListFragment extends BaseFragment {
                 getFileList(true);
             }
         });
-
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,6 +126,7 @@ public class FileListFragment extends BaseFragment {
         });
     }
 
+    //调整到文件选择页面
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -140,6 +140,7 @@ public class FileListFragment extends BaseFragment {
     }
 
 
+    //处理选择文件的结果
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FILE_SELECT_CODE && resultCode == RESULT_OK) {
@@ -157,6 +158,7 @@ public class FileListFragment extends BaseFragment {
     }
 
 
+    //每一个Item的点击事件
     private FileListAdapter.ItemClicklListener mItemClicklListener = new FileListAdapter.ItemClicklListener() {
         @Override
         public void onClick(final FileListModel.ListBean item) {
@@ -178,6 +180,10 @@ public class FileListFragment extends BaseFragment {
     };
 
 
+    /**
+     * 获取文件列表
+     * @param refresh 是否刷新
+     */
     private void getFileList(final boolean refresh) {
 
         BaiduApi.ApiBuilder.build().getFileList(getDir())

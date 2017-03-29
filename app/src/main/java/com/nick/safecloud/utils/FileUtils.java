@@ -8,7 +8,7 @@ import android.os.Environment;
 import java.net.URISyntaxException;
 
 /**
- * Created by Sparrow on 2017/3/20.
+ * 文件工具类
  */
 
 public class FileUtils {

@@ -13,7 +13,7 @@ import com.nick.safecloud.utils.TimeUtils;
 import java.util.List;
 
 /**
- * Created by Sparrow on 2017/3/17.
+ * 文件列表的Adapter
  */
 
 public class FileListAdapter extends BaseQuickAdapter<FileListModel.ListBean, FileListAdapter.FileViewHolder> {

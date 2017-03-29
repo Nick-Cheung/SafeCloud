@@ -3,7 +3,7 @@ package com.nick.safecloud.utils;
 import com.nick.safecloud.base.BaseApplication;
 
 /**
- * Created by Sparrow on 2017/3/17.
+ * dip和px的互转工具
  */
 
 public class DensityUtils {

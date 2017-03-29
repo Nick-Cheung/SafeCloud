@@ -5,7 +5,7 @@ import android.widget.Toast;
 import com.nick.safecloud.base.BaseApplication;
 
 /**
- * Created by Sparrow on 2017/3/17.
+ * Toast工具类
  */
 
 public class ToastUtils {

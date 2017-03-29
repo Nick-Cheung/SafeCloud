@@ -100,6 +100,8 @@ public class NetDiskActivity extends BaseActivity {
         getQuote();
     }
 
+
+    //展示Fragment
     private void showFragment(int index) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         hideFragment(ft);
@@ -140,6 +142,7 @@ public class NetDiskActivity extends BaseActivity {
 
 
     private void setListener() {
+        //导航页面的点击事件
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -160,6 +163,7 @@ public class NetDiskActivity extends BaseActivity {
     }
 
 
+    //获取网盘信息并显示
     private void getQuote() {
 
         BaiduApi.ApiBuilder.build().getQuote()
